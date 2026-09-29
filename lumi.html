@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lumi ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#e79bc0; --accent-soft:#fbe6f1; --accent-dark:#c9679f;
+  --bg:#fff8fb; --card:#ffffff; --text:#3a2e35; --sub:#8a7a83; --line:#f2e2eb;
+  --radius:20px; --shadow:0 8px 24px rgba(200,120,160,.12);
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  box-sizing:border-box;
+}
+:root:not([data-theme="light"]){}
+:root[data-theme="dark"]{
+  --bg:#241b21; --card:#2f242c; --text:#f3e8ee; --sub:#b79aa8; --line:#3d2f38;
+  --accent-soft:#3d2a33; --shadow:0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;transition:background .3s,color .3s}
+h1,h2,h3,.brand{font-family:'Fredoka',sans-serif}
+button{font-family:inherit;cursor:pointer;border:none}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding:20px 18px 90px;position:relative}
+.hidden{display:none!important}
+
+/* Landing */
+.landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px}
+.landing h1{font-size:2rem;margin:0 0 10px;color:var(--accent-dark)}
+.landing p{color:var(--sub);max-width:320px;margin:0 0 28px;line-height:1.5}
+.btn-primary{background:var(--accent);color:#fff;padding:14px 28px;border-radius:30px;font-weight:600;font-size:1rem;box-shadow:var(--shadow)}
+.btn-primary:active{transform:scale(.97)}
+
+/* Onboarding */
+.ob-step{display:none;animation:fade .35s ease}
+.ob-step.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ob-title{font-size:1.4rem;margin:6px 0 4px}
+.ob-sub{color:var(--sub);margin:0 0 20px;font-size:.92rem}
+input[type=text],select,input[type=time]{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);font-size:1rem;margin-bottom:14px;font-family:inherit}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{padding:8px 14px;border-radius:20px;background:var(--card);border:1.5px solid var(--line);font-size:.85rem;color:var(--text)}
+.chip.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
+.palette{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.swatch{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.swatch.selected{border-color:var(--text)}
+.ob-nav{display:flex;justify-content:space-between;margin-top:18px}
+.btn-ghost{background:none;color:var(--sub);padding:10px 6px;font-weight:600}
+.btn-next{background:var(--accent);color:#fff;padding:12px 26px;border-radius:24px;font-weight:600}
+
+/* App shell */
+header.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.greet h2{margin:0;font-size:1.3rem}
+.greet p{margin:2px 0 0;color:var(--sub);font-size:.85rem}
+.level-badge{background:var(--accent-soft);color:var(--accent-dark);padding:6px 12px;border-radius:16px;font-weight:600;font-size:.8rem}
+.card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
+.card h3{margin:0 0 12px;font-size:1.02rem}
+.xpbar{height:8px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:8px}
+.xpfill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s}
+.task-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.task-item:last-child{border-bottom:none}
+.task-time{font-size:.78rem;color:var(--sub);width:44px;flex-shrink:0}
+.task-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;background:transparent}
+.task-check.done{background:var(--accent)}
+.task-text{flex:1;font-size:.92rem}
+.task-text.done{text-decoration:line-through;color:var(--sub)}
+.small-btn{background:var(--accent-soft);color:var(--accent-dark);padding:9px 14px;border-radius:14px;font-size:.82rem;font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.habit{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+.habit-dot{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.habit-dot.done{background:var(--accent)}
+.streak{font-size:.75rem;color:var(--sub)}
+
+/* Pomodoro */
+.pomo-time{font-size:3rem;text-align:center;font-family:'Fredoka';color:var(--accent-dark);margin:8px 0}
+.pomo-controls{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.pomo-modes{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
+
+/* Chat */
+.chat-box{display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto;margin-bottom:12px}
+.msg{padding:10px 14px;border-radius:16px;max-width:85%;font-size:.9rem;line-height:1.4}
+.msg.ai{background:var(--accent-soft);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-input-row{display:flex;gap:8px}
+.chat-input-row input{margin:0;flex:1}
+.send-btn{background:var(--accent);color:#fff;padding:0 18px;border-radius:14px;font-weight:600}
+.suggest-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.suggest{background:var(--card);border:1.5px solid var(--line);padding:6px 12px;border-radius:14px;font-size:.78rem;color:var(--sub)}
+
+/* Nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));max-width:480px;margin:0 auto}
+.nav-item{background:none;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.68rem;flex:1}
+.nav-item.active{color:var(--accent-dark)}
+.nav-item span.ic{font-size:1.25rem}
+.view{display:none}
+.view.active{display:block;animation:fade .3s ease}
+.toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+.switch{width:42px;height:24px;border-radius:14px;background:var(--line);position:relative}
+.switch.on{background:var(--accent)}
+.switch .dot{width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left .2s}
+.switch.on .dot{left:21px}
+input[type=text]:focus,select:focus,input[type=time]:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- LANDING -->
+  <div class="landing" id="landing">
+    <h1>Tu vida, organizada a tu manera. ✨</h1>
+    <p>Un planner inteligente que aprende cómo organizas tu tiempo y te ayuda a convertir el caos en un plan.</p>
+    <button class="btn-primary" onclick="goTo('onboarding')">Crear mi espacio ✨</button>
+  </div>
+
+  <!-- ONBOARDING -->
+  <div id="onboarding" class="hidden">
+    <div class="ob-step active" data-step="1">
+      <div class="ob-title">Hola, soy Lumi ✨</div>
+      <p class="ob-sub">Vamos a crear un espacio que se sienta completamente tuyo. ¿Cómo te llamas?</p>
+      <input type="text" id="ob-name" placeholder="Tu nombre">
+      <input type="text" id="ob-nick" placeholder="Apodo (opcional)">
+    </div>
+    <div class="ob-step" data-step="2">
+      <div class="ob-title">¿Qué te describe mejor?</div>
+      <div class="chip-row" id="ob-type">
+        <div class="chip" data-v="Estudiante">Estudiante</div>
+        <div class="chip" data-v="Universitario">Universitario</div>
+        <div class="chip" data-v="Profesional">Profesional</div>
+        <div class="chip" data-v="Emprendedor">Emprendedor</div>
+        <div class="chip" data-v="Otro">Otro</div>
+      </div>
+      <p class="ob-sub" style="margin-bottom:6px">¿A qué hora sueles despertar y dormir?</p>
+      <input type="time" id="ob-wake" value="07:00">
+      <input type="time" id="ob-sleep" value="23:00">
+    </div>
+    <div class="ob-step" data-step="3">
+      <div class="ob-title">Elige tu color ✨</div>
+      <p class="ob-sub">La interfaz se adaptará a tu color favorito.</p>
+      <div class="palette" id="ob-palette">
+        <div class="swatch" style="background:#e79bc0" data-c="#e79bc0;#c9679f;#fbe6f1"></div>
+        <div class="swatch" style="background:#b39ddb" data-c="#b39ddb;#8e6fc7;#efe8fb"></div>
+        <div class="swatch" style="background:#7fc7e6" data-c="#7fc7e6;#4fa8cf;#e2f4fb"></div>
+        <div class="swatch" style="background:#8fcfa6" data-c="#8fcfa6;#5fae7d;#e4f6ea"></div>
+        <div class="swatch" style="background:#f2b68c" data-c="#f2b68c;#dc8f57;#fdece0"></div>
+        <div class="swatch" style="background:#f0d97a" data-c="#f0d97a;#d4b843;#fbf5dc"></div>
+      </div>
+      <button class="small-btn" style="width:100%;margin-bottom:6px" onclick="surpriseMe()">✨ Sorpréndeme</button>
+    </div>
+    <div class="ob-nav">
+      <button class="btn-ghost" id="ob-back" onclick="obBack()">Atrás</button>
+      <button class="btn-next" id="ob-next" onclick="obNext()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="main" class="hidden">
+    <header class="top">
+      <div class="greet">
+        <h2 id="greetText">Hola ✨</h2>
+        <p id="dateText"></p>
+      </div>
+      <div class="level-badge" id="levelBadge">Nv.1</div>
+    </header>
+
+    <!-- HOME -->
+    <div class="view active" id="view-home">
+      <div class="card">
+        <div class="toggle" style="padding:0 0 4px">
+          <h3 style="margin:0">✨ Tu día</h3>
+          <button class="small-btn" onclick="planMyDay()">Planifica mi día</button>
+        </div>
+        <div id="taskList"></div>
+      </div>
+      <div class="card">
+        <div class="toggle" style="padding:0">
+          <h3 style="margin:0">Progreso · XP</h3>
+        </div>
+        <div class="xpbar"><div class="xpfill" id="xpFill"></div></div>
+        <p class="streak" id="xpLabel"></p>
+      </div>
+      <div class="card">
+        <h3>🌱 Hábitos de hoy</h3>
+        <div id="habitList"></div>
+      </div>
+    </div>
+
+    <!-- AGENDA -->
+    <div class="view" id="view-agenda">
+      <div class="card">
+        <h3>📅 Agenda</h3>
+        <div id="agendaList"></div>
+      </div>
+    </div>
+
+    <!-- CREATE -->
+    <div class="view" id="view-create">
+      <div class="card">
+        <h3>➕ Nueva tarea</h3>
+        <input type="text" id="newTaskTitle" placeholder="¿Qué necesitas hacer?">
+        <input type="time" id="newTaskTime">
+        <button class="btn-primary" style="width:100%" onclick="addTask()">Agregar</button>
+      </div>
+      <div class="card">
+        <h3>🍅 Pomodoro</h3>
+        <div class="pomo-modes">
+          <button class="small-btn" onclick="setPomo(25,5)">25/5</button>
+          <button class="small-btn" onclick="setPomo(50,10)">50/10</button>
+          <button class="small-btn" onclick="setPomo(90,20)">90/20</button>
+        </div>
+        <div class="pomo-time" id="pomoTime">25:00</div>
+        <p style="text-align:center;color:var(--sub);font-size:.85rem" id="pomoLabel">Sesión de concentración 🌷</p>
+        <div class="pomo-controls">
+          <button class="small-btn" onclick="pomoToggle()" id="pomoBtn">Iniciar</button>
+          <button class="small-btn" onclick="pomoReset()">Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI -->
+    <div class="view" id="view-ai">
+      <div class="card">
+        <h3>Lumi AI ✨</h3>
+        <div class="suggest-row">
+          <div class="suggest" onclick="quickAI('Organízame el día')">Organízame el día</div>
+          <div class="suggest" onclick="quickAI('Organiza mi caos')">Organiza mi caos</div>
+          <div class="suggest" onclick="quickAI('Hoy estoy cansada, hazme un plan más ligero')">Plan más ligero</div>
+        </div>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Escríbele a Lumi..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="send-btn" onclick="sendChat()">➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="view" id="view-profile">
+      <div class="card">
+        <h3>⚙️ Configuración</h3>
+        <input type="text" id="cfgName" placeholder="Nombre">
+        <div class="toggle">
+          <span>Modo oscuro 🌙</span>
+          <div class="switch" id="darkSwitch" onclick="toggleDark()"><div class="dot"></div></div>
+        </div>
+        <div class="toggle">
+          <span>Animaciones</span>
+          <div class="switch on" id="animSwitch" onclick="toggleAnim()"><div class="dot"></div></div>
+        </div>
+        <p class="ob-sub" style="margin:10px 0 4px">Color favorito</p>
+        <div class="palette" id="cfgPalette"></div>
+        <button class="btn-primary" style="width:100%;margin-top:10px" onclick="saveProfile()">Guardar cambios</button>
+      </div>
+      <div class="card">
+        <h3>Datos</h3>
+        <button class="small-btn" style="width:100%;margin-bottom:8px" onclick="exportData()">Exportar datos</button>
+        <button class="small-btn" style="width:100%;background:#f6dede;color:#c25858" onclick="resetData()">Borrar todos los datos</button>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-v="home" onclick="showView('home')"><span class="ic">🏠</span>Inicio</button>
+      <button class="nav-item" data-v="agenda" onclick="showView('agenda')"><span class="ic">📅</span>Agenda</button>
+      <button class="nav-item" data-v="create" onclick="showView('create')"><span class="ic">➕</span>Crear</button>
+      <button class="nav-item" data-v="ai" onclick="showView('ai')"><span class="ic">🤖</span>IA</button>
+      <button class="nav-item" data-v="profile" onclick="showView('profile')"><span class="ic">👤</span>Perfil</button>
+    </nav>
+  </div>
+</div>
+
+<script>
+/* ---------- Storage ---------- */
+const DB_KEY='lumi_state_v1';
+function loadState(){
+  try{ const raw=localStorage.getItem(DB_KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return null;
+}
+function saveState(){ try{ localStorage.setItem(DB_KEY, JSON.stringify(state)); }catch(e){} }
+
+let state = loadState() || {
+  onboarded:false, name:'', nick:'', type:'Estudiante', wake:'07:00', sleep:'23:00',
+  colors:{a:'#e79bc0',d:'#c9679f',s:'#fbe6f1'}, dark:false, anim:true,
+  xp:0, level:1, streak:0,
+  tasks:[
+    {id:1,title:'Desayuno',time:'08:00',done:false},
+    {id:2,title:'Estudiar matemáticas',time:'09:00',done:false},
+    {id:3,title:'Descanso',time:'11:00',done:false},
+    {id:4,title:'Proyecto',time:'11:30',done:false},
+    {id:5,title:'Almuerzo',time:'14:00',done:false}
+  ],
+  habits:[
+    {name:'Tomar agua',icon:'💧',done:false,streak:3},
+    {name:'Leer',icon:'📚',done:false,streak:1},
+    {name:'Ejercicio',icon:'🏃',done:false,streak:0}
+  ],
+  chat:[{who:'ai',text:'Hola, soy Lumi ✨ Cuéntame qué tienes pendiente y te ayudo a organizarlo.'}]
+};
+
+/* ---------- Theme ---------- */
+function applyTheme(){
+  const r=document.documentElement.style;
+  r.setProperty('--accent',state.colors.a);
+  r.setProperty('--accent-dark',state.colors.d);
+  r.setProperty('--accent-soft',state.colors.s);
+  document.documentElement.setAttribute('data-theme', state.dark?'dark':'light');
+}
+function toggleDark(){ state.dark=!state.dark; document.getElementById('darkSwitch').classList.toggle('on',state.dark); applyTheme(); saveState(); }
+function toggleAnim(){ state.anim=!state.anim; document.getElementById('animSwitch').classList.toggle('on',state.anim); saveState(); }
+
+/* ---------- Nav / views ---------- */
+function goTo(id){
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('onboarding').classList.add('hidden');
+  document.getElementById('main').classList.add('hidden');
+  document.getElementById(id).classList.remove('hidden');
+}
+function showView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active', el.dataset.v===v));
+}
+
+/* ---------- Onboarding ---------- */
+let obStep=1;
+document.getElementById('ob-type').addEventListener('click',e=>{
+  if(!e.target.dataset.v) return;
+  [...e.target.parentNode.children].forEach(c=>c.classList.remove('selected'));
+  e.target.classList.add('selected'); state.type=e.target.dataset.v;
+});
+document.getElementById('ob-palette').addEventListener('click',e=>{
+  if(!e.target.dataset.c) return;
+  [...e.target.parentNode.children].forEach(c=>c.classList.remove('selected'));
+  e.target.classList.add('selected');
+  const [a,d,s]=e.target.dataset.c.split(';'); state.colors={a,d,s}; applyTheme();
+});
+function surpriseMe(){
+  const opts=[['#e79bc0','#c9679f','#fbe6f1'],['#b39ddb','#8e6fc7','#efe8fb'],['#7fc7e6','#4fa8cf','#e2f4fb'],['#8fcfa6','#5fae7d','#e4f6ea']];
+  const [a,d,s]=opts[Math.floor(Math.random()*opts.length)];
+  state.colors={a,d,s}; applyTheme();
+}
+function obNext(){
+  if(obStep===1){ state.name=document.getElementById('ob-name').value.trim()||'Amiga'; state.nick=document.getElementById('ob-nick').value.trim(); }
+  if(obStep===2){ state.wake=document.getElementById('ob-wake').value; state.sleep=document.getElementById('ob-sleep').value; }
+  if(obStep===3){ finishOnboarding(); return; }
+  obStep++; renderStep();
+}
+function obBack(){ if(obStep>1){ obStep--; renderStep(); } }
+function renderStep(){
+  document.querySelectorAll('.ob-step').forEach(s=>s.classList.toggle('active', +s.dataset.step===obStep));
+  document.getElementById('ob-back').style.visibility = obStep===1?'hidden':'visible';
+  document.getElementById('ob-next').textContent = obStep===3?'Crear mi espacio ✨':'Siguiente';
+}
+function finishOnboarding(){ state.onboarded=true; saveState(); initMain(); goTo('main'); }
+
+/* ---------- Rendering ---------- */
+function greeting(){
+  const h=new Date().getHours();
+  if(h<12) return 'Buenos días';
+  if(h<19) return 'Buenas tardes';
+  return 'Buenas noches';
+}
+function renderHome(){
+  document.getElementById('greetText').textContent = `${greeting()}, ${state.nick||state.name} 🌷`;
+  document.getElementById('dateText').textContent = new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('levelBadge').textContent = `Nv.${state.level}`;
+  const need = state.level*100;
+  document.getElementById('xpFill').style.width = Math.min(100,(state.xp/need)*100)+'%';
+  document.getElementById('xpLabel').textContent = `${state.xp}/${need} XP · racha de ${state.streak} días 🔥`;
+
+  const list=document.getElementById('taskList'); list.innerHTML='';
+  state.tasks.slice().sort((a,b)=>a.time.localeCompare(b.time)).forEach(t=>{
+    const row=document.createElement('div'); row.className='task-item';
+    row.innerHTML=`<span class="task-time">${t.time}</span><button class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})"></button><span class="task-text ${t.done?'done':''}">${t.title}</span>`;
+    list.appendChild(row);
+  });
+
+  const hl=document.getElementById('habitList'); hl.innerHTML='';
+  state.habits.forEach((h,i)=>{
+    const row=document.createElement('div'); row.className='habit';
+    row.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><div class="habit-dot ${h.done?'done':''}" onclick="toggleHabit(${i})">${h.icon}</div><span>${h.name}</span></div><span class="streak">${h.streak} días</span>`;
+    hl.appendChild(row);
+  });
+
+  const al=document.getElementById('agendaList'); al.innerHTML='';
+  state.tasks.slice().sort((a,b)=>a.time.localeCompare(b.time)).forEach(t=>{
+    const row=document.createElement('div'); row.className='task-item';
+    row.innerHTML=`<span class="task-time">${t.time}</span><span class="task-text ${t.done?'done':''}">${t.title}</span>`;
+    al.appendChild(row);
+  });
+}
+function toggleTask(id){
+  const t=state.tasks.find(x=>x.id===id); t.done=!t.done;
+  if(t.done){ addXP(10); }
+  saveState(); renderHome();
+}
+function toggleHabit(i){
+  const h=state.habits[i]; h.done=!h.done; h.streak+= h.done?1:-1;
+  if(h.done) addXP(5);
+  saveState(); renderHome();
+}
+function addXP(n){
+  state.xp+=n; const need=state.level*100;
+  if(state.xp>=need){ state.xp-=need; state.level++; }
+  saveState();
+}
+function addTask(){
+  const title=document.getElementById('newTaskTitle').value.trim();
+  const time=document.getElementById('newTaskTime').value || '12:00';
+  if(!title) return;
+  state.tasks.push({id:Date.now(),title,time,done:false});
+  document.getElementById('newTaskTitle').value='';
+  saveState(); renderHome(); showView('home');
+}
+
+/* ---------- Planificación automática ---------- */
+function planMyDay(){
+  // reordena tareas no completadas respetando horas de sueño y espacia bloques
+  const pending = state.tasks.filter(t=>!t.done);
+  let cursor = 9*60; // 09:00 en minutos, tras despertar
+  const wakeMin = toMin(state.wake), sleepMin = toMin(state.sleep);
+  cursor = Math.max(cursor, wakeMin+60);
+  pending.forEach((t,i)=>{
+    t.time = toHHMM(cursor);
+    cursor += 60; // 1h por tarea
+    if((i+1)%2===0) cursor += 15; // descanso cada 2 tareas
+    if(cursor > sleepMin - 60) cursor = sleepMin - 60; // no invadir el sueño
+  });
+  saveState(); renderHome();
+  pushChat('ai', `Reorganicé tu día: agrupé tus tareas pendientes con descansos entre ellas y respeté tu horario de sueño (${state.wake}–${state.sleep}).`);
+}
+function toMin(hhmm){ const [h,m]=hhmm.split(':').map(Number); return h*60+m; }
+function toHHMM(min){ min=((min%1440)+1440)%1440; const h=String(Math.floor(min/60)).padStart(2,'0'); const m=String(min%60).padStart(2,'0'); return `${h}:${m}`; }
+
+/* ---------- Pomodoro ---------- */
+let pomoWork=25, pomoBreak=5, pomoSecs=25*60, pomoRunning=false, pomoInterval=null, pomoOnBreak=false;
+function setPomo(w,b){ pomoWork=w; pomoBreak=b; pomoReset(); }
+function pomoReset(){ pomoRunning=false; clearInterval(pomoInterval); pomoOnBreak=false; pomoSecs=pomoWork*60; renderPomo(); document.getElementById('pomoBtn').textContent='Iniciar'; }
+function renderPomo(){
+  const m=String(Math.floor(pomoSecs/60)).padStart(2,'0'); const s=String(pomoSecs%60).padStart(2,'0');
+  document.getElementById('pomoTime').textContent=`${m}:${s}`;
+  document.getElementById('pomoLabel').textContent = pomoOnBreak? 'Descanso 🌿' : 'Sesión de concentración 🌷';
+}
+function pomoToggle(){
+  pomoRunning=!pomoRunning;
+  document.getElementById('pomoBtn').textContent = pomoRunning?'Pausar':'Iniciar';
+  if(pomoRunning){
+    pomoInterval=setInterval(()=>{
+      pomoSecs--;
+      if(pomoSecs<=0){
+        if(!pomoOnBreak){ addXP(15); pomoOnBreak=true; pomoSecs=pomoBreak*60; }
+        else{ pomoOnBreak=false; pomoSecs=pomoWork*60; pomoRunning=false; clearInterval(pomoInterval); document.getElementById('pomoBtn').textContent='Iniciar'; }
+        renderHome();
+      }
+      renderPomo();
+    },1000);
+  } else { clearInterval(pomoInterval); }
+}
+
+/* ---------- Lumi AI (simulada) ---------- */
+function buildUserContext(){
+  return { name:state.name, type:state.type, wake:state.wake, sleep:state.sleep,
+    tasks:state.tasks, habits:state.habits, xp:state.xp, level:state.level };
+}
+function generateAIResponse(msg){
+  const ctx=buildUserContext();
+  const m=msg.toLowerCase();
+  const pending=ctx.tasks.filter(t=>!t.done);
+  if(m.includes('organiza mi caos') || m.includes('caos')){
+    const parts=msg.replace(/organiza mi caos/i,'').split(/,| y /).map(s=>s.trim()).filter(Boolean);
+    if(parts.length>1){
+      let cursor=toMin(state.wake)+120;
+      parts.forEach(p=>{ state.tasks.push({id:Date.now()+Math.random(),title:p,time:toHHMM(cursor),done:false}); cursor+=60; });
+      saveState(); renderHome();
+      return `Identifiqué ${parts.length} tareas y las agregué a tu planner con horarios y descansos. Puedes verlas en tu Agenda.`;
+    }
+    return 'Cuéntame todo lo que tienes pendiente en un solo mensaje, separado por comas, y lo organizo por ti.';
+  }
+  if(m.includes('organízame el día') || m.includes('organiza mi día') || m.includes('organiza el día')){
+    planMyDay();
+    return `Listo, ${ctx.name}. Organicé tus ${pending.length} tareas pendientes con descansos entre bloques.`;
+  }
+  if(m.includes('cansad') || m.includes('ligero')){
+    if(pending.length>2){
+      state.tasks = ctx.tasks.filter(t=>t.done).concat(pending.slice(0,2));
+      saveState(); renderHome();
+      return 'Entiendo. Dejé solo tus 2 tareas más importantes por hoy y moví el resto. Descansa un poco 🌙';
+    }
+    return 'Tu día ya está ligero, aprovecha para descansar 🌸';
+  }
+  if(m.includes('atrasad') || m.includes('examen') || m.includes('viernes')){
+    return 'Podemos priorizar esa materia. Te sugiero un bloque de 45 min hoy y otro mañana antes del examen. ¿Lo agrego a tu agenda?';
+  }
+  if(m.includes('reorganiza') || m.includes('no termin')){
+    planMyDay();
+    return 'Está bien, no pasa nada. Encontré espacio en tu agenda para lo pendiente y mantuve tus descansos.';
+  }
+  if(m.includes('minutos libres') || m.includes('tiempo libre')){
+    return 'Con ese tiempo podrías avanzar una tarea corta pendiente o simplemente descansar — tú decides 🌷';
+  }
+  if(pending.length===0) return 'Ya completaste todo lo de hoy. Disfruta tu tiempo libre ✨';
+  return `Ahora mismo tienes ${pending.length} tareas pendientes, la próxima es "${pending[0].title}" a las ${pending[0].time}. ¿Quieres que te ayude a organizarlas?`;
+}
+function pushChat(who,text){ state.chat.push({who,text}); saveState(); renderChat(); }
+function renderChat(){
+  const box=document.getElementById('chatBox'); box.innerHTML='';
+  state.chat.forEach(c=>{ const d=document.createElement('div'); d.className='msg '+c.who; d.textContent=c.text; box.appendChild(d); });
+  box.scrollTop=box.scrollHeight;
+}
+function sendChat(){
+  const inp=document.getElementById('chatInput'); const val=inp.value.trim(); if(!val) return;
+  pushChat('user',val); inp.value='';
+  setTimeout(()=>pushChat('ai', generateAIResponse(val)), 300);
+}
+function quickAI(t){ document.getElementById('chatInput').value=t; sendChat(); }
+
+/* ---------- Profile ---------- */
+function renderProfile(){
+  document.getElementById('cfgName').value=state.name;
+  document.getElementById('darkSwitch').classList.toggle('on',state.dark);
+  document.getElementById('animSwitch').classList.toggle('on',state.anim);
+  const pal=document.getElementById('cfgPalette'); pal.innerHTML='';
+  [['#e79bc0','#c9679f','#fbe6f1'],['#b39ddb','#8e6fc7','#efe8fb'],['#7fc7e6','#4fa8cf','#e2f4fb'],['#8fcfa6','#5fae7d','#e4f6ea'],['#f2b68c','#dc8f57','#fdece0']].forEach(([a,d,s])=>{
+    const sw=document.createElement('div'); sw.className='swatch'; sw.style.background=a;
+    if(a===state.colors.a) sw.classList.add('selected');
+    sw.onclick=()=>{ state.colors={a,d,s}; applyTheme(); renderProfile(); };
+    pal.appendChild(sw);
+  });
+}
+function saveProfile(){ state.name=document.getElementById('cfgName').value.trim()||state.name; saveState(); renderHome(); showView('home'); }
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='lumi-datos.json'; a.click();
+}
+function resetData(){ if(confirm('¿Borrar todos tus datos de Lumi?')){ localStorage.removeItem(DB_KEY); location.reload(); } }
+
+/* ---------- Init ---------- */
+function initMain(){ applyTheme(); renderHome(); renderChat(); renderProfile(); renderPomo(); }
+if(state.onboarded){ applyTheme(); goTo('main'); initMain(); } else { renderStep(); }
+</script>
+</body>
+</html>
